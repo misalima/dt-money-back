@@ -1,6 +1,8 @@
+
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 import { CreateTransactionDTO } from './dto/create-transaction.dto';
+import { UpdateTransactionDTO } from './dto/update-transaction-dto';
 
 @Injectable()
 export class AppService {
@@ -21,5 +23,20 @@ export class AppService {
       },
     });
     return transactions;
+  }
+
+  async updateTransaction(id: string, data: UpdateTransactionDTO) {
+    const updatedTransaction = await this.prismaService.transaction.update({
+      where: { id },
+      data: data,
+    });
+
+    return updatedTransaction;
+  }
+
+  async deleteTransaction(id: string) {
+    return await this.prismaService.transaction.delete({
+      where: {id: id}
+    });
   }
 }
